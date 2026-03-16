@@ -12,7 +12,7 @@ from claude_brain import (chat, analyser_intention, generer_resume,
                            generer_plan_journee, comparer_ia)
 from datetime import datetime
 
-load_dotenv(dotenv_path=r'C:\Users\fallm\PycharmProjects\telegram\.env')
+load_dotenv()
 
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")

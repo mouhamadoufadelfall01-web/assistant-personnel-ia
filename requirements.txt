@@ -1,4 +1,6 @@
-﻿anthropic
+anthropic
 python-telegram-bot
 python-dotenv
 apscheduler
+openai
+google-genai

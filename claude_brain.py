@@ -8,7 +8,7 @@ from database import (get_taches, get_notes, get_historique,
                       ajouter_note, ajouter_rappel)
 from datetime import datetime
 
-load_dotenv(dotenv_path=r'C:\Users\fallm\PycharmProjects\telegram\.env')
+load_dotenv()
 
 # --- CLIENTS ---
 claude_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))

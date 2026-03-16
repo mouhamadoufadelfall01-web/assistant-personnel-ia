@@ -1,4 +1,5 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import requests
 from datetime import datetime
@@ -11,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=r'C:\Users\fallm\PycharmProjects\telegram\.env')
 
-# ─── GENERATEUR DE FACTURES PDF ───
+# --- GENERATEUR DE FACTURES PDF ---
 def generer_facture(client_nom, client_email, services, numero=None):
     os.makedirs("factures", exist_ok=True)
     if not numero:
@@ -60,7 +61,7 @@ def generer_facture(client_nom, client_email, services, numero=None):
     doc.build(elements)
     return fichier, total_general
 
-# ─── SCRAPER LEADS ───
+# --- SCRAPER LEADS ---
 def scraper_leads_simple(query, location="Dakar"):
     try:
         url = f"https://www.google.com/search?q={query}+{location}+contact+email"
@@ -80,7 +81,7 @@ def scraper_leads_simple(query, location="Dakar"):
     except Exception as e:
         return [{"nom": f"Erreur: {e}", "url": ""}]
 
-# ─── VEILLE CONCURRENTIELLE ───
+# --- VEILLE CONCURRENTIELLE ---
 def surveiller_prix(url, selecteur_css=None):
     try:
         headers = {"User-Agent": "Mozilla/5.0"}
@@ -95,7 +96,7 @@ def surveiller_prix(url, selecteur_css=None):
     except Exception as e:
         return {"erreur": str(e), "url": url}
 
-# ─── GENERATEUR RAPPORT PDF ───
+# --- GENERATEUR RAPPORT PDF ---
 def generer_rapport(titre, sections, nom_fichier=None):
     os.makedirs("rapports", exist_ok=True)
     if not nom_fichier:
@@ -117,25 +118,15 @@ def generer_rapport(titre, sections, nom_fichier=None):
     doc.build(elements)
     return nom_fichier
 
-# ─── METEO ───
+# --- METEO ---
 def get_meteo(ville="Dakar"):
     try:
-        api_key = os.getenv("OPENWEATHER_API_KEY", "")
-        if not api_key:
-            return f"Meteo pour {ville} : API key manquante"
-        url = f"http://api.openweathermap.org/data/2.5/weather?q={ville}&appid={api_key}&units=metric&lang=fr"
-        r = requests.get(url, timeout=10)
-        data = r.json()
-        if data.get("cod") == 200:
-            temp = data["main"]["temp"]
-            desc = data["weather"][0]["description"]
-            humidity = data["main"]["humidity"]
-            return f"Meteo {ville} : {temp}C, {desc}, Humidite: {humidity}%"
-        return f"Ville non trouvee : {ville}"
+        r = requests.get(f"https://wttr.in/{ville}?format=3", timeout=10)
+        return f"??? {r.text.strip()}"
     except Exception as e:
         return f"Erreur meteo : {e}"
 
-# ─── TAUX DE CHANGE ───
+# --- TAUX DE CHANGE ---
 def get_taux_change(base="EUR"):
     try:
         url = f"https://api.exchangerate-api.com/v4/latest/{base}"
@@ -148,7 +139,7 @@ def get_taux_change(base="EUR"):
     except Exception as e:
         return f"Erreur taux : {e}"
 
-# ─── ACTUALITES ───
+# --- ACTUALITES ---
 def get_actualites(sujet="Senegal"):
     try:
         api_key = os.getenv("NEWS_API_KEY", "")
@@ -168,18 +159,18 @@ def get_actualites(sujet="Senegal"):
     except Exception as e:
         return f"Erreur actualites : {e}"
 
-# ─── BLAGUES ───
+# --- BLAGUES ---
 def get_blague():
     try:
         r = requests.get("https://official-joke-api.appspot.com/random_joke", timeout=10)
         data = r.json()
-        return f"😄 {data['setup']}\n\n{data['punchline']}"
+        return f"?? {data['setup']}\n\n{data['punchline']}"
     except:
         try:
             r = requests.get("https://v2.jokeapi.dev/joke/Any?lang=fr", timeout=10)
             data = r.json()
             if data["type"] == "single":
-                return f"😄 {data['joke']}"
-            return f"😄 {data['setup']}\n\n{data['delivery']}"
+                return f"?? {data['joke']}"
+            return f"?? {data['setup']}\n\n{data['delivery']}"
         except Exception as e:
             return f"Erreur blague : {e}"

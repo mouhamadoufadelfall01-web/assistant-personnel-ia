@@ -38,7 +38,7 @@ MENU_IA = ReplyKeyboardMarkup([
 sessions = {}
 
 def get_ia_emoji():
-    modele = ia_active["modele"]
+    modele = "groq"
     if modele == "claude": return "?? Claude"
     if modele == "chatgpt": return "?? ChatGPT"
     if modele == "gemini": return "?? Gemini"
@@ -50,7 +50,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"?? Bonjour *{nom}* !\n\n"
         f"Je suis ton assistant personnel IA ??\n\n"
         f"*3 cerveaux IA disponibles :*\n"
-        f"?? Claude (Anthropic) - Principal\n"
+        f"?? Groq Llama3 - Principal\n"
         f"?? ChatGPT (OpenAI) - Secondaire\n"
         f"?? Gemini (Google) - Tertiaire\n\n"
         f"IA active : *{get_ia_emoji()}*\n\n"
@@ -93,21 +93,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if texte == "?? Claude (Anthropic)":
-        ia_active["modele"] = "claude"
+        ia_active["modele"] = "groq"
         await update.message.reply_text(
             "?? *Claude activé !*\nPropulsé par Anthropic",
             parse_mode="Markdown", reply_markup=MENU_PRINCIPAL)
         return
 
     if texte == "?? ChatGPT (OpenAI)":
-        ia_active["modele"] = "chatgpt"
+        ia_active["modele"] = "groq"
         await update.message.reply_text(
             "?? *ChatGPT activé !*\nPropulsé par OpenAI",
             parse_mode="Markdown", reply_markup=MENU_PRINCIPAL)
         return
 
     if texte == "?? Gemini (Google)":
-        ia_active["modele"] = "gemini"
+        ia_active["modele"] = "groq"
         await update.message.reply_text(
             "?? *Gemini activé !*\nPropulsé par Google",
             parse_mode="Markdown", reply_markup=MENU_PRINCIPAL)
@@ -260,7 +260,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"? Generation du planning avec {get_ia_emoji()}...")
         taches = get_taches(statut="en attente")
-        planning = generer_plan_journee(taches, modele=ia_active["modele"])
+        planning = generer_plan_journee(taches, modele="groq")
         await update.message.reply_text(
             f"?? *Ton planning :*\n\n{planning}",
             parse_mode="Markdown",
@@ -272,7 +272,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         contenu = texte.split(":", 1)[1].strip()
         await update.message.reply_text(
             f"? Resume avec {get_ia_emoji()}...")
-        resume = generer_resume(contenu, modele=ia_active["modele"])
+        resume = generer_resume(contenu, modele="groq")
         await update.message.reply_text(
             f"?? *Resume :*\n\n{resume}",
             parse_mode="Markdown",
@@ -300,7 +300,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=MENU_PRINCIPAL)
         return
 
-    reponse = chat(texte, historique, modele=ia_active["modele"])
+    reponse = chat(texte, historique, modele="groq")
     await update.message.reply_text(
         f"{get_ia_emoji()} : {reponse}",
         reply_markup=MENU_PRINCIPAL)
